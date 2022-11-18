@@ -19,4 +19,23 @@ const createUser = (req, res) => {
   }
 };
 
-module.exports = { createUser };
+const getUserMovie = (req, res) => {
+  try {
+    req.getConnection((err, conn) => {
+      if (err) return res.send(err);
+
+      conn.query("SELECT * FROM peliculas_usuario", (err, result) => {
+        res.status(!result > 0 ? 400 : 200);
+        res.json(
+          !result > 0
+            ? { error: `Sucedio un error al cargar los datos: ${err}` }
+            : { message: "Busqueda exítosa", result }
+        );
+      });
+    });
+  } catch (error) {
+    handleHttp(res, "ERROR_GET_USER_MOVIE");
+  }
+};
+
+module.exports = { createUser, getUserMovie };

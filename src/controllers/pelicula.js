@@ -52,7 +52,7 @@ const getNovedad = (req, res) => {
       if (err) return res.send(err);
 
       conn.query(
-        `SELECT * FROM peliculas WHERE fecha_estreno BETWEEN DATE_FORMAT(NOW(), '%Y-%m-01') AND NOW()`,
+        `SELECT * FROM peliculas WHERE fecha_estreno <= NOW() AND fecha_estreno >= date_add(NOW(), INTERVAL -21 DAY) ORDER BY fecha_estreno DESC`,
         (err, result) => {
           res.status(!result > 0 ? 400 : 200);
           res.json(
@@ -73,15 +73,17 @@ const watchMovie = (req, res) => {
     req.getConnection((err, conn) => {
       if (err) return res.send(err);
 
+      let { pelicula, usuario } = req.params;
+
       conn.query(
-        `UPDATE peliculas SET id = ?`,
-        [req.body, req.params.value],
+        `INSERT INTO peliculas_usuario (usuarios, peliculas) SELECT username, titulo FROM peliculas p INNER JOIN usuarios u WHERE p.id = ? AND u.id = ?`,
+        [pelicula, usuario],
         (err, result) => {
           res.status(!result > 0 ? 400 : 200);
           res.json(
             !result > 0
               ? { error: `Sucedio un error al actualizar los datos: ${err}` }
-              : { message: "Pelicula vista", result }
+              : { message: "Pelicula vista" }
           );
         }
       );

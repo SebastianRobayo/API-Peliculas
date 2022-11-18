@@ -10,6 +10,6 @@ const {
 route.get("/peliculas/get/:titulo/:categoria/:pagina", getMovie);
 route.get("/peliculas/novedades/get", getNovedad);
 route.post("/peliculas/create", createMovie);
-route.put("/peliculas/watch/update/:value", watchMovie);
+route.post("/peliculas/watch/create/:pelicula/:usuario", watchMovie);
 
 module.exports = route;
