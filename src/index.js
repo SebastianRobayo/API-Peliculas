@@ -11,7 +11,7 @@ const dbConfig = {
   host: "us-cdbr-east-06.cleardb.net",
   user: "b4f5c051c1fd7c",
   password: "2b6004ba",
-  database: "heroku_2952441516f413",
+  database: "heroku_2952441516f413b",
 };
 
 app.use(conn(mysql, dbConfig, "single"));
