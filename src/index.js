@@ -8,10 +8,10 @@ const routeMovie = require("./routes/pelicula.routes");
 const app = express();
 const PORT = process.env.PORT || 5051;
 const dbConfig = {
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "baq",
-  password: process.env.DB_PASSWORD || "Asiste.2021",
-  database: process.env.DB_NAME || "peliculas",
+  host: "us-cdbr-east-06.cleardb.net",
+  user: "b4f5c051c1fd7c",
+  password: "2b6004ba",
+  database: "heroku_2952441516f413b",
 };
 
 app.use(conn(mysql, dbConfig, "single"));
