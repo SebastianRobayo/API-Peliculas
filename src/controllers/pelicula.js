@@ -25,16 +25,17 @@ const getMovie = (req, res) => {
     req.getConnection((err, conn) => {
       if (err) return res.send(err);
 
-      let { titulo, categoria, pagina } = req.params;
+      let { titulo, categoria, tituloValue, categoriaValue, pagina } =
+        req.params;
 
       conn.query(
-        `SELECT * FROM peliculas WHERE titulo = ? OR categoria = ? ORDER BY fecha_estreno DESC`,
-        [titulo, categoria],
+        `SELECT * FROM peliculas WHERE ${titulo} = ? AND ${categoria} = ? ORDER BY fecha_estreno DESC`,
+        [tituloValue, categoriaValue],
         (err, result) => {
           let resultado = pagination(pagina, result);
-          res.status(!result > 0 ? 400 : 200);
+          res.status(!result.length > 0 ? 400 : 200);
           res.json(
-            !result > 0
+            !result.length > 0
               ? { error: `Sucedio un error al cargar los datos: ${err}` }
               : { message: "Busqueda exítosa", resultado }
           );
@@ -54,9 +55,9 @@ const getNovedad = (req, res) => {
       conn.query(
         `SELECT * FROM peliculas WHERE fecha_estreno <= NOW() AND fecha_estreno >= date_add(NOW(), INTERVAL -21 DAY) ORDER BY fecha_estreno DESC`,
         (err, result) => {
-          res.status(!result > 0 ? 400 : 200);
+          res.status(!result.length > 0 ? 400 : 200);
           res.json(
-            !result > 0
+            !result.length > 0
               ? { error: `Sucedio un error al cargar los datos: ${err}` }
               : { message: "Novedades", result }
           );

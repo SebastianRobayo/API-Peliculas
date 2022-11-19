@@ -25,9 +25,9 @@ const getUserMovie = (req, res) => {
       if (err) return res.send(err);
 
       conn.query("SELECT * FROM peliculas_usuario", (err, result) => {
-        res.status(!result > 0 ? 400 : 200);
+        res.status(!result.length > 0 ? 400 : 200);
         res.json(
-          !result > 0
+          !result.length > 0
             ? { error: `Sucedio un error al cargar los datos: ${err}` }
             : { message: "Busqueda exítosa", result }
         );
