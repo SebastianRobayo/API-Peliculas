@@ -24,14 +24,17 @@ const getUserMovie = (req, res) => {
     req.getConnection((err, conn) => {
       if (err) return res.send(err);
 
-      conn.query("SELECT * FROM peliculas_usuario", (err, result) => {
-        res.status(!result.length > 0 ? 400 : 200);
-        res.json(
-          !result.length > 0
-            ? { error: `Sucedio un error al cargar los datos: ${err}` }
-            : { message: "Busqueda exítosa", result }
-        );
-      });
+      conn.query(
+        "SELECT * FROM peliculas_usuario ORDER BY usuarios DESC",
+        (err, result) => {
+          res.status(!result.length > 0 ? 400 : 200);
+          res.json(
+            !result.length > 0
+              ? { error: `Sucedio un error al cargar los datos: ${err}` }
+              : { message: "Busqueda exítosa", result }
+          );
+        }
+      );
     });
   } catch (error) {
     handleHttp(res, "ERROR_GET_USER_MOVIE");
